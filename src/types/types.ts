@@ -1,9 +1,10 @@
 // types.ts
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { Video } from './video';
 
 export type RootTabParamList = {
   Home: undefined;
-  Upload: undefined;
+  Upload: {videoData?: Video} | undefined;
   MyProfile: undefined;
 };
 

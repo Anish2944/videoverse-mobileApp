@@ -56,3 +56,14 @@ export const useAddToWatchHistory = () => {
     },
   })
 }
+
+export const useDeleteVideo = (videoId: string) => {
+  return useMutation({
+    mutationFn: async () => {
+      await api.delete(`/videos/${videoId}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['videos'] })
+    },
+  })
+}

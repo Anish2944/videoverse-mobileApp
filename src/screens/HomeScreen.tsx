@@ -56,6 +56,7 @@ const HomeScreen = () => {
         <FlatList
           data={videos}
           refreshControl={<RefreshControl refreshing={isFetching} onRefresh={refetch} />}
+          showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => <VideoCard video={item} />}
           onEndReached={loadMore}

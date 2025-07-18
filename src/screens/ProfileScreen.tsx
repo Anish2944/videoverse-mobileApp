@@ -18,7 +18,7 @@ import { useChannelProfile, useUpdateCoverImage, useUpdateprofile, useUpdateprof
 import { useLikedVideos } from '../hooks/useLikes'
 import { useToggleSubscribe, useWatchHistory } from '../hooks/useVideos'
 import VideoCard from '../components/VideoCard'
-import { ActivityIndicator } from 'react-native-paper'
+import { ActivityIndicator, Button } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { RootStackParamList } from '../types/types'
 
@@ -166,15 +166,14 @@ const ProfileScreen = () => {
         </View>
 
         {isOwner ? (
-          <View style={tw`flex-row items-center`}>
-          <TouchableOpacity
-          style={tw` px-3 mx-2 py-1 rounded`}
-          onPress={() => setIsEditModalVisible(true)}
-        >
-          <Feather name="edit-2" size={24} color="#2563eb" />
-        </TouchableOpacity>
-          {/* <Text style={tw`text-blue-500 font-semibold text-sm`}>Edit</Text> */}
-        </View>
+          <Button
+            onPress={() => setIsEditModalVisible(true)}
+            mode="contained"
+            icon='pencil'
+            style={tw`bg-blue-500 mx-2`}
+          >
+            Edit Profile
+          </Button>
         
         ) : (
           <TouchableOpacity

@@ -1,24 +1,19 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import tw from '../lib/tw'
-import { Avatar } from 'react-native-paper'
+import { Avatar, Button } from 'react-native-paper'
 import { formatDistanceToNow } from 'date-fns'
+import { useAuthStore } from '../store/authStore'
+import { Video } from '../types/video'
 interface Props {
-  video: {
-    _id: string
-    title: string
-    thumbnail: string
-    avatar?: string
-    views: number
-    duration: number
-    owner: string
-    channel?: string,
-    createdAt: Date
-  }
+  video: Video
 }
 const VideoCard = ({ video }: Props) => {
   const navigation = useNavigation<any>();
+  const {user} = useAuthStore()
+  const isOwner = video.owner === user._id;
 
   let timeAgo = 'Unknown time';
   try {
@@ -31,10 +26,9 @@ const VideoCard = ({ video }: Props) => {
   } catch (err) {
     console.error("💥 Error parsing time:", err);
   }
-  
-
 
   return (
+  <View style={tw`bg-white dark:bg-gray-900`}>
     <TouchableOpacity
       onPress={() => navigation.navigate('VideoPlayer', { video })}
       style={tw`mb-4 bg-white dark:bg-black dark:text-white rounded-xl overflow-hidden shadow-md`}
@@ -49,6 +43,7 @@ const VideoCard = ({ video }: Props) => {
             {video.channel || 'Unknown Channel'} · {video.views} views · {timeAgo}
             </Text>
         </View>
+
         {/* Avatar */}
         <TouchableOpacity 
         style={tw`absolute top-2 right-2`}
@@ -61,6 +56,15 @@ const VideoCard = ({ video }: Props) => {
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
+      {isOwner && (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Upload', { videoData: video })}
+            style={tw`absolute top-2 bg-gray-500 dark:bg-gray-600 opacity-80 p-2 rounded-full right-2`}
+          >
+            <Feather name="edit" size={24} color="white" />
+          </TouchableOpacity>
+        )}
+  </View>
   )
 }
 
