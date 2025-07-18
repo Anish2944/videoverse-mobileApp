@@ -1,0 +1,30 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "allowJs": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "strict": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["react-native", "react"],
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    // "baseUrl": ".",
+    // "paths": {
+    //   "*": [
+    //     "./node_modules/*"
+    //   ]
+    // }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "nativewind-env.d.ts",
+  ],
+  "exclude": ["node_modules", "metro.config.js", "babel.config.js"]
+} // This file is used to configure TypeScript for the VideoVerse mobile application.
