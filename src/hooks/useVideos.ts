@@ -57,6 +57,17 @@ export const useAddToWatchHistory = () => {
   })
 }
 
+export const useViewsInc = () => {
+  return useMutation({
+    mutationFn: async (videoId: string) => {
+      await api.patch(`/videos/views/${videoId}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['videos'] })
+    },
+  })
+}
+
 export const useDeleteVideo = (videoId: string) => {
   return useMutation({
     mutationFn: async () => {

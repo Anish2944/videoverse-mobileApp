@@ -12,6 +12,7 @@ import tw from '../lib/tw'
 import { useVideos } from '../hooks/useVideos'
 import VideoCard from '../components/VideoCard'
 import { useDebounce } from '../utils/debounce'
+import { Feather } from '@expo/vector-icons'
 
 const HomeScreen = () => {
   const [search, setSearch] = useState('')
@@ -33,8 +34,12 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={tw`flex-1 p-4 bg-white`}>
       <View style={tw`flex-row items-center justify-between px-4 mb-4`}>
-        <Text style={tw`text-2xl font-bold text-black`}>🎬 VideoVerse</Text>
+        <Text style={tw`text-2xl -mx-3 font-bold text-purple-700`}>Videoverse</Text>
         {/* Optional: Profile Avatar or Settings Icon */}
+        {/* Settings */}
+        <View style={tw`text-2xl text-purple-600 font-bold`}>
+          <Feather name="settings" size={24} color="black" />
+        </View>
       </View>
 
       {/* 🔍 Search Bar */}

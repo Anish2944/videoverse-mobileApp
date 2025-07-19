@@ -13,6 +13,9 @@ import { useAuthStore } from '../store/authStore'
 import { RootStackParamList, RootTabParamList } from '../types/types'
 import { Avatar, Icon } from 'react-native-paper'
 import { Ionicons } from '@expo/vector-icons'
+import DashboardScreen from '../screens/DashboardScreen'
+import PlaylistScreen from '../screens/PlaylistScreen'
+import PlaylistDetail from '../components/PlaylistDetail'
 
 const BlankScreen = () => null; // Placeholder for any blank screen if needed
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -46,12 +49,18 @@ const AppTabs = () => {
             }}
           />
         );
+      } else if (route.name === 'Dashboard') {
+        return <Ionicons name={focused ? 'analytics' : 'analytics-outline'} size={size} color={color} />;
+      } else if (route.name === 'Playlist') {
+        return <Ionicons name={focused ? 'albums' : 'albums-outline'} size={size} color={color} />;
       }
     },
   })}
 >
     <Tab.Screen name="Home" component={HomeScreen} />
+    <Tab.Screen name="Dashboard" component={DashboardScreen} />
     <Tab.Screen name="Upload" component={UploadScreen} />
+    <Tab.Screen name="Playlist" component={PlaylistScreen} />
     <Tab.Screen 
       name="MyProfile" 
       component={BlankScreen} 
@@ -79,6 +88,7 @@ const Navigation = () => {
             <Stack.Screen name="AppTabs" component={AppTabs} />
             <Stack.Screen name="VideoPlayer" component={VideoPlayerScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen name="PlaylistDetail" component={PlaylistDetail} />
           </>
         ) : (
           <Stack.Screen name="SignIn" component={SignInScreen} />

@@ -8,6 +8,7 @@ import { PaperProvider, MD3DarkTheme as PaperDarkTheme, MD3LightTheme as PaperDe
 import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuthStore } from './src/store/authStore';
+import Toast from 'react-native-toast-message';
 
 export default function App() {
 
@@ -48,6 +49,7 @@ if(!fontsLoaded) return null;
         <NavigationContainer>
           <RootNavigator />
         </NavigationContainer>
+        <Toast />
       </PaperProvider>
     </QueryClientProvider>
   );

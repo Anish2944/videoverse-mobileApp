@@ -26,6 +26,11 @@ const VideoCard = ({ video }: Props) => {
   } catch (err) {
     console.error("💥 Error parsing time:", err);
   }
+  // Validate video prop
+  if (typeof video !== 'object') {
+    console.error('🚨 Invalid video prop:', video);
+    return null;
+  }
 
   return (
   <View style={tw`bg-white dark:bg-gray-900`}>

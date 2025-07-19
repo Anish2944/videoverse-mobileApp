@@ -26,5 +26,5 @@
     "**/*.tsx",
     "nativewind-env.d.ts",
   ],
-  "exclude": ["node_modules", "metro.config.js", "babel.config.js"]
+  "exclude": ["node_modules", "metro.config.js", "babel.config.js, jest.config.js"]
 } // This file is used to configure TypeScript for the VideoVerse mobile application.
