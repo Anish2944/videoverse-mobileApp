@@ -16,8 +16,10 @@ import queryClient from '../services/queryClient'
 import Comments from '../components/Comments'
 import { IconButton } from 'react-native-paper'
 import { AddToPlaylistModal } from '../components/PlaylistModal'
+import { useThemeStore } from '../store/themeStore'
 
 const VideoPlayerScreen = () => {
+  const {theme} = useThemeStore();
   const { params } = useRoute<any>()
   const { video } = params
   const playerRef = useRef(null)
@@ -27,6 +29,10 @@ const VideoPlayerScreen = () => {
   const {user} = useAuthStore()
 
   const {data: VLike} = useVideoLikes(video._id)
+  const usernames = VLike?.likedBy.map(item => item?.likeBy?.username) || [];
+
+  const isLiked = usernames.includes(user?.username || '');
+
   const {mutate: toggleLike} = useToggleLike(video._id)
     // const {data: subscribers} = useSubscribers(video.owner)
   const {mutate: toggleSubscribe} = useToggleSubscribe(video?.owner)
@@ -83,7 +89,7 @@ const VideoPlayerScreen = () => {
   },[]);
   
   return (
-    <SafeAreaView style={tw`flex-1 bg-white dark:bg-black`} edges={['top']}>
+    <SafeAreaView style={tw`flex-1 ${theme === 'dark' ? 'bg-black' : 'bg-white'} `} edges={['top']}>
       <ScrollView contentContainerStyle={tw`pb-20`}>
         {/* 🎬 Video Player */}
         <Video
@@ -97,7 +103,7 @@ const VideoPlayerScreen = () => {
 
         {/* 📝 Video Info */}
         <View style={tw`px-4 py-3`}>
-          <Text style={tw`text-xl font-bold text-black dark:text-white`}>
+          <Text style={tw`text-xl font-bold ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>
             {video.title}
           </Text>
           <Text style={tw`text-gray-600 dark:text-gray-400`}>
@@ -107,15 +113,15 @@ const VideoPlayerScreen = () => {
           {/* ❤️ Like / 🔔 Subscribe */}
           <View style={tw`flex-row items-center justify-between mt-4`}>
             <TouchableOpacity style={tw`flex-row items-center`} onPress={() => toggleLike()} >
-              <Ionicons name="thumbs-up-outline" size={24} color="black" />
-              <Text style={tw`ml-2 text-black dark:text-white`}>Like ({VLike?.NoOfLikesOnVideo})</Text>
+              <Ionicons name={isLiked ? 'thumbs-up' : 'thumbs-up-outline'} size={24} color={`${theme === 'dark' ? 'white' : 'black'}`} />
+              <Text style={tw`ml-2 ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>Like {VLike?.NoOfLikesOnVideo}</Text>
             </TouchableOpacity>
-            <Text style={tw`text-black dark:text-white`}>{chData?.subscriberCount} subscribers</Text>
+            <Text style={tw`${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>{chData?.subscriberCount} subscribers</Text>
             <IconButton icon="plus" onPress={() => setModalVisible(true)} />
             <AddToPlaylistModal visible={modalVisible} onDismiss={() => setModalVisible(false)} userId={user._id} videoId={video._id} />
 
             <TouchableOpacity
-              style={tw`px-4 py-1 bg-red-600 rounded-full ${chData?.isSubscribed ? 'bg-gray-400' : ''}`}
+              style={tw`px-4 py-1 bg-purple-600 rounded-full ${chData?.isSubscribed ? 'bg-gray-400' : ''}`}
               onPress={() => {toggleSubscribe(); console.log("Refetch"); chDRefetch();}}
             >
               <Text style={tw`text-white font-bold`}>Subscribe</Text>
@@ -124,28 +130,28 @@ const VideoPlayerScreen = () => {
 
           {/* 📄 Description */}
           <View style={tw`mt-4`}>
-            <Text style={tw`text-base text-black dark:text-white`}>
+            <Text style={tw`text-base ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>
               {video.description}
             </Text>
           </View>
 
           {/* 💬 Comments (Static for now) */}
           <View style={tw`mt-6 px-4`}>
-          <Text style={tw`text-lg font-bold text-black dark:text-white mb-2`}>
+          <Text style={tw`text-lg font-bold ${theme === 'dark' ? 'text-gray-100' : 'text-black'} mb-2`}>
             Comments
           </Text>
 
         {/* ➕ Add new comment */}
         <View style={tw`flex-row items-center mb-4`}>
           <TextInput
-            style={tw`flex-1 border border-gray-300 dark:border-gray-700 p-2 rounded text-black dark:text-white`}
+            style={tw`flex-1 border border-gray-300 dark:border-gray-700 p-2 rounded ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}
             value={commentText}
             onChangeText={setCommentText}
             placeholder="Add a comment..."
             placeholderTextColor="#999"
           />
           <TouchableOpacity onPress={handleCommentSubmit} style={tw`ml-2`}>
-            <Ionicons name="send" size={24} color="black" />
+            <Ionicons name="send" size={24} color={`${theme === 'dark' ? 'white' : 'black'}`} />
           </TouchableOpacity>
         </View>
 

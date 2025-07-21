@@ -1,7 +1,12 @@
+// metro.config.js
 const { getDefaultConfig } = require("expo/metro-config");
 const { withNativeWind } = require("nativewind/metro");
 
-const config = getDefaultConfig(__dirname);
-// This configuration file is used to set up Metro bundler for the VideoVerse mobile application.
-config.resolver.sourceExts = config.resolver.sourceExts.filter((ext) => ext !== "mjs");
+let config = getDefaultConfig(__dirname);
+
+// NativeWind + Metro fix
+config = withNativeWind(config, {
+  input: "./global.css",
+});
+
 module.exports = config;

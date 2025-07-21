@@ -12,22 +12,25 @@ import tw from '../lib/tw'
 import VideoCard from '../components/VideoCard'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Feather } from '@expo/vector-icons'
+import { useThemeStore } from '../store/themeStore'
 
 const DashboardScreen = () => {
   const { data: stats, isLoading: loadingStats } = useChannelStats()
   const { data: videos, isLoading: loadingVideos } = useChannelVideos()
 
+  const {theme} = useThemeStore()
+
   return (
-    <SafeAreaView style={tw`flex-1 bg-white px-4`}>
+    <SafeAreaView style={tw`flex-1 ${theme === 'dark' ? 'bg-black' : 'bg-white'} px-4`}>
       <View style={tw`flex-row items-center`} >
-      <Ionicons name="analytics" size={24} color="black" />
-       <Text style={tw`text-2xl mx-2 font-bold text-black`} >Dashboard</Text>
+      <Ionicons name="analytics" size={24} color={theme === 'dark' ? 'white' : 'black'} />
+       <Text style={tw`text-2xl mx-2 font-bold ${theme === 'dark' ? 'text-white' : 'text-black'}`} >Dashboard</Text>
        </View>
 
       {loadingStats ? (
         <ActivityIndicator style={tw`mt-8`} size="large" />
       ) : (
-        <View style={tw`flex-row flex-wrap justify-between mt-4 mb-6`}>
+        <View style={tw`flex-row  flex-wrap justify-between mt-4 mb-6`}>
           <StatCard label="👁️ Views" value={stats?.totalViews ?? 0} />
           <StatCard label="❤️ Likes" value={stats?.totalLikes ?? 0} />
           <StatCard label="📹 Videos" value={stats?.totalVideos ?? 0} />
@@ -35,7 +38,7 @@ const DashboardScreen = () => {
         </View>
       )}
 
-      <Text style={tw`text-xl font-semibold mb-2 text-black`}>
+      <Text style={tw`text-xl ${theme === 'dark' ? 'text-white' : 'text-black'} font-semibold mb-2`}>
         🎥 Uploaded Videos
       </Text>
 

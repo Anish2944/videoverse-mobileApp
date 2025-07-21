@@ -12,11 +12,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Video, ResizeMode } from 'expo-av';
 import { StatusBar } from 'expo-status-bar';
 import { useDeleteVideo } from '../hooks/useVideos';
+import { useThemeStore } from '../store/themeStore';
 
 const UploadScreen = () => {
   const route = useRoute<RouteProp<RootTabParamList, 'Upload'>>();
   const videoData = route.params?.videoData; // null = new, object = edit mode
   const navigation = useNavigation();
+  const {theme} = useThemeStore();
 
   const [title, setTitle] = useState('');
   const [video, setVideo] = useState(null);
@@ -146,11 +148,11 @@ const UploadScreen = () => {
   const isFormValid = title && video;
 
   return (
-  <SafeAreaView style={tw`flex-1 bg-white`}> 
+  <SafeAreaView style={tw`flex-1 ${theme === 'dark' ? 'bg-black' : 'bg-white'} `}> 
     <StatusBar style="dark" />
     <ScrollView contentContainerStyle={tw`px-4 pb-40 pt-4`} showsVerticalScrollIndicator={false}>
 
-      <Text variant="titleLarge" style={tw`mb-4`}>
+      <Text variant="titleLarge" style={tw`mb-4 font-bold `}>
         {isEditMode ? 'Edit Video' : 'Upload New Video'}
       </Text>
 
@@ -210,7 +212,7 @@ const UploadScreen = () => {
         onPress={handleSubmit}
         disabled={!isFormValid || isLoading}
         loading={isLoading}
-        style={tw`mt-2 `}
+        style={tw`mt-2`}
       >
         {isEditMode ? 'Update Video' : 'Upload'}
       </Button>

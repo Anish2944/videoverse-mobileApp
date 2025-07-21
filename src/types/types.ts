@@ -12,8 +12,10 @@ export type RootTabParamList = {
 
 export type RootStackParamList = {
   SignIn: undefined;
+  SignUp: undefined;
   PlaylistDetail: { playlistId: string };
   AppTabs: NavigatorScreenParams<RootTabParamList>;
   VideoPlayer: undefined;
+  Settings: undefined;
   Profile: { username: string };
 };

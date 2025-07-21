@@ -1,21 +1,14 @@
 import React from 'react'
-import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-import SignInScreen from '../screens/SignInScreen'
-import HomeScreen from '../screens/HomeScreen'
-import UploadScreen from '../screens/UploadScreen'
-import ProfileScreen from '../screens/ProfileScreen'
-import VideoPlayerScreen from '../screens/VideoPlayerScreen'
+import {HomeScreen, ProfileScreen, SignInScreen, SignUpScreen, UploadScreen, VideoPlayerScreen, PlaylistScreen, SettingScreen, DashboardScreen, PlaylistDetail} from "../screens"
 
 import { useAuthStore } from '../store/authStore'
 import { RootStackParamList, RootTabParamList } from '../types/types'
 import { Avatar, Icon } from 'react-native-paper'
 import { Ionicons } from '@expo/vector-icons'
-import DashboardScreen from '../screens/DashboardScreen'
-import PlaylistScreen from '../screens/PlaylistScreen'
-import PlaylistDetail from '../components/PlaylistDetail'
+import { useThemeStore } from '../store/themeStore'
 
 const BlankScreen = () => null; // Placeholder for any blank screen if needed
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -24,7 +17,7 @@ const Tab = createBottomTabNavigator<RootTabParamList>()
 
 const AppTabs = () => {
   const { user } = useAuthStore();
-  const navigation = useNavigation();
+  const { theme } = useThemeStore();
 
   return (
 <Tab.Navigator
@@ -32,6 +25,10 @@ const AppTabs = () => {
   screenOptions={({ route }) => ({
     headerShown: false,
     tabBarShowLabel: false,
+    tabBarStyle: {
+      backgroundColor: theme === 'dark' ? '#000' : '#fff',
+      borderTopColor: theme === 'dark' ? '#333' : '#ccc',
+    },
     tabBarIcon: ({ focused, color, size }) => {
       if (route.name === 'Home') {
         return <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />;
@@ -57,7 +54,7 @@ const AppTabs = () => {
     },
   })}
 >
-    <Tab.Screen name="Home" component={HomeScreen} />
+    <Tab.Screen name="Home" component={HomeScreen}  />
     <Tab.Screen name="Dashboard" component={DashboardScreen} />
     <Tab.Screen name="Upload" component={UploadScreen} />
     <Tab.Screen name="Playlist" component={PlaylistScreen} />
@@ -89,9 +86,13 @@ const Navigation = () => {
             <Stack.Screen name="VideoPlayer" component={VideoPlayerScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
             <Stack.Screen name="PlaylistDetail" component={PlaylistDetail} />
+            <Stack.Screen name="Settings" component={SettingScreen} />
           </>
         ) : (
-          <Stack.Screen name="SignIn" component={SignInScreen} />
+          <>
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+          </>
         )}
       </Stack.Navigator>
   )

@@ -21,9 +21,11 @@ import VideoCard from '../components/VideoCard'
 import { ActivityIndicator, Button } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { RootStackParamList } from '../types/types'
+import { useThemeStore } from '../store/themeStore'
 
 const ProfileScreen = () => {
   const { user: loggedInUser } = useAuthStore()
+  const {theme} = useThemeStore()
   const route = useRoute<RouteProp<RootStackParamList, 'Profile'>>()
   const {mutateAsync: updateProfile} = useUpdateprofile()
   const { username: channel } = route.params
@@ -116,7 +118,7 @@ const ProfileScreen = () => {
 
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-white dark:bg-black`}>
+    <SafeAreaView style={tw`flex-1 ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
       {/* Cover Photo */}
       <View>
         {userdata?.coverImage ? <Image
@@ -124,7 +126,7 @@ const ProfileScreen = () => {
           style={tw`w-full h-40`}
           resizeMode="cover"
         /> : (<View style={tw`w-full h-40 bg-gray-200 flex items-center justify-center`} >
-          <Text style={tw`text-2xl font-bold text-black dark:text-white`}>No Cover Photo</Text>
+          <Text style={tw`text-2xl font-bold ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>No Cover Photo</Text>
         </View>)}
         { isOwner && <TouchableOpacity
           onPress={() => pickImage('cover')}
@@ -150,10 +152,10 @@ const ProfileScreen = () => {
             </TouchableOpacity>}
           </View>
           <View style={tw`ml-2 flex-col`}>
-            <Text style={tw`text-lg mt-1  font-bold text-black dark:text-white`}>
+            <Text style={tw`text-lg mt-1  font-bold  ${theme === 'dark' ? 'text-gray-300' : 'text-black'}`}>
               {userdata?.fullName}
             </Text>
-            <Text style={tw`text-sm font-bold text-black dark:text-white`}>
+            <Text style={tw`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-black'} font-bold`}>
               {userdata?.username}
             </Text>
             <Text style={tw`text-s text-gray-600 dark:text-gray-300`}>
@@ -170,14 +172,14 @@ const ProfileScreen = () => {
             onPress={() => setIsEditModalVisible(true)}
             mode="contained"
             icon='pencil'
-            style={tw`bg-blue-500 mx-2`}
+            style={tw`bg-purple-500 dark:bg-gray-600 mx-2`}
           >
             Edit Profile
           </Button>
         
         ) : (
           <TouchableOpacity
-            style={tw`${channelProfile?.isSubscribed ? 'bg-gray-500' : 'bg-blue-500'} px-2 py-2 rounded`}
+            style={tw`${channelProfile?.isSubscribed ? 'bg-gray-500' : 'bg-purple-600'} px-3 mx-2 py-1 rounded-lg`}
             onPress={() => {toggleSubscribe(); refetchProfile();}}
           >
             <Text style={tw`text-white font-semibold text-sm`}>{channelProfile?.isSubscribed ? 'Subscribed' : 'Subscribe'}</Text>
@@ -193,7 +195,7 @@ const ProfileScreen = () => {
             onPress={() => setActiveTab(tab as any)}
             style={tw`${activeTab === tab ? 'border-b-2 border-blue-500' : ''} pb-2`}
           >
-            <Text style={tw`text-base text-black dark:text-white capitalize`}>
+            <Text style={tw`text-base ${theme === 'dark' ? 'text-gray-100' : 'text-black'} capitalize`}>
               {tab}
             </Text>
           </TouchableOpacity>
@@ -229,20 +231,20 @@ const ProfileScreen = () => {
         onRequestClose={() => setIsEditModalVisible(false)}
       >
         <View style={tw`flex-1 justify-center items-center bg-black/50`}>
-          <View style={tw`bg-white dark:bg-gray-900 w-11/12 p-6 rounded-xl`}>
-            <Text style={tw`text-lg font-bold mb-4 text-black dark:text-white`}>
+          <View style={tw`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} w-11/12 p-6 rounded-xl`}>
+            <Text style={tw`text-lg font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>
               Edit Profile
             </Text>
 
             <TextInput
-              style={tw`border p-2 rounded mb-3 text-black dark:text-white border-gray-300 dark:border-gray-700`}
+              style={tw`border p-2 rounded mb-3 ${theme === 'dark' ? 'text-gray-100' : 'text-black'} border-gray-300 dark:border-gray-700`}
               placeholder="Username"
               value={fullName}
               onChangeText={setFullName}
               placeholderTextColor="#999"
             />
             <TextInput
-              style={tw`border p-2 rounded mb-3 text-black dark:text-white border-gray-300 dark:border-gray-700`}
+              style={tw`border p-2 rounded mb-3 ${theme === 'dark' ? 'text-gray-100' : 'text-black'} border-gray-300 dark:border-gray-700`}
               placeholder="Email"
               value={email}
               onChangeText={setEmail}

@@ -6,8 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
 import { useAuthStore } from '../store/authStore';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useThemeStore } from '../store/themeStore';
 const PlaylistScreen = () => {
   const {user} = useAuthStore();
+  const {theme} = useThemeStore();
   const navigation = useNavigation<any>();
   const { data: playlists, isLoading, error } = useUserPlaylists(user._id);
   const deleteMutation = useDeletePlaylist();
@@ -27,14 +29,12 @@ const PlaylistScreen = () => {
       </View>
     );
   }
-  
-  
 
   const renderPlaylist = ({ item }: any) => {
     const topThumbnail = item.videos[0]?.thumbnail || 'https://via.placeholder.com/150';
 
     return (
-      <Card style={tw`mb-4 mx-2`}>
+      <Card style={tw`mb-4 pb-2 mx-2`}>
         <TouchableOpacity onPress={() => navigation.navigate('PlaylistDetail', { playlistId: item._id })}>
           <View style={tw`relative`}>
             <Image source={{ uri: topThumbnail }} style={tw`h-40 w-full rounded-t-xl`} resizeMode="cover" />
@@ -57,14 +57,14 @@ const PlaylistScreen = () => {
 
   if (isLoading) {
     return (
-      <View style={tw`flex-1 justify-center items-center`}>
+      <View style={tw`flex-1 ${theme === 'dark' ? 'bg-black' : 'bg-white'} justify-center items-center`}>
         <ActivityIndicator size="large" />
       </View>
     );
   }
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-white dark:bg-black`}>
+    <SafeAreaView style={tw`flex-1 ${theme === 'dark' ? 'bg-black' : 'bg-white'} `}>
       <Text style={tw`text-xl font-bold text-center p-4`}>Your Playlists</Text>
         <FlatList
         data={playlists}

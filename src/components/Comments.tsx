@@ -11,6 +11,7 @@ import { CompositeNavigationProp, useNavigation } from '@react-navigation/native
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList, RootTabParamList } from '../types/types';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { useThemeStore } from '../store/themeStore';
 
 
 type CommentsProps = {
@@ -37,21 +38,21 @@ const Comments = ({
     onUpdate,
     onDelete
 }: CommentsProps) => {
-
+    const {theme} = useThemeStore();
     const {user} = useAuthStore();
-    const isMyComment = comment.owner._id === user?._id
+    const isMyComment = comment.owner._id === user?._id;
+    
     const timeAgo = formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })
-    console.log(comment)
-
+    
     const {data: Clikes} = useCommentLikes(comment._id);
     const {mutate: toggleCLike} = useCommentToggleLike(comment._id);
-
+    
     const navigation = useNavigation<NavProp>();
     
     return (
         <View
           key={comment._id}
-          style={tw`flex-row items-start space-x-3 mb-4 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg`}
+          style={tw`flex-row rounded-lg items-start space-x-3 mb-4 ${ theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'} p-3 rounded-lg`}
         >
           {/* Avatar */}
           <TouchableOpacity onPress={() => navigation.navigate('Profile', { username: comment.owner.username })} >
@@ -65,14 +66,14 @@ const Comments = ({
           {/* Right section */}
           <View style={tw`flex-1`}>
             <View style={tw`flex-row justify-between items-center`}>
-              <Text style={tw`font-semibold text-black dark:text-white`}>
+              <Text style={tw`font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>
                 {comment.owner.username}
               </Text>
               <View style={tw`flex-col items-center`}>
                 <Text style={tw`text-xs text-gray-500`}>{timeAgo}</Text>
                 <TouchableOpacity style={tw`flex-row items-center`} onPress={() => toggleCLike()} >
-                  <Ionicons name="thumbs-up-outline" size={16} color="black" />
-                  <Text style={tw`text-s text-black dark:text-white`}>Like ({Clikes?.NoOfLikesOnComment})</Text>
+                  <Ionicons name={Clikes?.likedBy[0]?.likeBy?.username === user?.username ? 'thumbs-up' : 'thumbs-up-outline'} size={16} color={`${theme === 'dark' ? 'white' : 'black'}`} />
+                  <Text style={tw`text-s ml-1 ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>Like {Clikes?.NoOfLikesOnComment}</Text>
                 </TouchableOpacity>
               </View>
               
@@ -84,7 +85,7 @@ const Comments = ({
                 <TextInput
                   value={updatedText}
                   onChangeText={setUpdatedText}
-                  style={tw`border border-gray-400 p-2 rounded text-black dark:text-white`}
+                  style={tw`border border-gray-400 p-2 rounded ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}
                   multiline
                 />
                 <View style={tw`flex-row mt-2 space-x-2`}>
@@ -103,7 +104,7 @@ const Comments = ({
                 </View>
               </View>
             ) : (
-              <Text style={tw`text-black dark:text-white mt-1`}>
+              <Text style={tw`${theme === 'dark' ? 'text-gray-100' : 'text-black'} mt-1`}>
                 {comment.content}
               </Text>
             )}

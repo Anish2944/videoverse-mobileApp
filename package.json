@@ -1,15 +1,12 @@
 {
   "name": "videoverse-mobile",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "index.tsx",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
-  },
-  "tailwindcss": {
-    "platform": "native"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.1",
@@ -47,7 +44,7 @@
     "@babel/core": "^7.28.0",
     "@types/react": "^19.1.8",
     "@types/react-native": "^0.73.0",
-    "tailwindcss": "^4.1.11",
+    "tailwindcss": "^3.4.17",
     "typescript": "~5.8.3"
   },
   "private": true

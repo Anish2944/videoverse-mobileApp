@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native';
-import { Modal, Portal, Button, IconButton } from 'react-native-paper';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Modal, Portal, Button, TextInput } from 'react-native-paper';
 import { useUserPlaylists, useAddVideoToPlaylist, useCreatePlaylist } from '../hooks/usePlaylist';
 import tw from '../lib/tw';
+import { useThemeStore } from '../store/themeStore';
 
 export const AddToPlaylistModal = ({ visible, onDismiss, userId, videoId }: {
   visible: boolean;
@@ -13,6 +14,8 @@ export const AddToPlaylistModal = ({ visible, onDismiss, userId, videoId }: {
   const [creatingNew, setCreatingNew] = useState(false);
   const [newPlaylistName, setNewPlaylistName] = useState('');
   const [newPlaylistDescription, setNewPlaylistDescription] = useState('');
+
+  const {theme} = useThemeStore();
 
   const { data: playlists } = useUserPlaylists(userId);
   const addToPlaylist = useAddVideoToPlaylist();
@@ -41,8 +44,8 @@ export const AddToPlaylistModal = ({ visible, onDismiss, userId, videoId }: {
 
   return (
     <Portal>
-      <Modal visible={visible} onDismiss={onDismiss} contentContainerStyle={tw`bg-white m-4 p-4 rounded-xl`}>
-        <Text style={tw`text-xl font-bold mb-4`}>Add to Playlist</Text>
+      <Modal visible={visible} onDismiss={onDismiss} contentContainerStyle={tw`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} m-4 p-4 rounded-xl`}>
+        <Text style={tw`text-xl ${theme === 'dark' ? 'text-gray-200' : 'text-black'} font-bold mb-4`}>Add to Playlist</Text>
 
         {!creatingNew ? (
           <>
@@ -66,15 +69,19 @@ export const AddToPlaylistModal = ({ visible, onDismiss, userId, videoId }: {
           <View>
             <TextInput
               placeholder="Playlist Name"
+              autoFocus
+              mode='outlined'
               value={newPlaylistName}
               onChangeText={setNewPlaylistName}
-              style={tw`border border-gray-300 p-2 mb-3 rounded`}
+              style={tw`border border-gray-300 p-2 mb-3 h-8 rounded`}
             />
             <TextInput
               placeholder="Description (optional)"
+              autoFocus
+              mode='outlined'
               value={newPlaylistDescription}
               onChangeText={setNewPlaylistDescription}
-              style={tw`border border-gray-300 p-2 mb-4 rounded`}
+              style={tw`border border-gray-300 h-8 p-2 mb-4 rounded`}
             />
             <Button mode="contained" onPress={handleCreatePlaylist}>Save Playlist</Button>
             <Button onPress={() => setCreatingNew(false)} style={tw`mt-2`}>

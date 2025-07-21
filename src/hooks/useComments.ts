@@ -25,14 +25,3 @@ export const useAddComment = (videoId: string) => {
     })
   }
 
-// export const useUpdateComment = async (commentId: string) => {
-//     const queryClient = useQueryClient()
-//     return useMutation({
-//         mutationFn: async (text: string) => {
-//         await api.patch(`/comments/c/${commentId}`, { content: text })
-//         },
-//         onSuccess: () => {
-//             queryClient.invalidateQueries({ queryKey: ['comments', commentId] })
-//         }
-//     })
-// }
