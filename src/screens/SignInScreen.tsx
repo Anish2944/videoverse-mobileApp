@@ -1,4 +1,4 @@
-import { View, Text, Alert, TextInput} from 'react-native'
+import { View, Text, Alert, TextInput, ActivityIndicator} from 'react-native'
 import { Button } from 'react-native-paper';
 import React, { useState } from 'react'
 import { useAuthStore } from '../store/authStore';
@@ -34,6 +34,10 @@ const SignInScreen = () => {
       Alert.alert('Login failed', error.message);
     }
   })
+
+  if (loginMutation.isPending) {
+    return <ActivityIndicator size="large" color="#0000ff" />
+  }
 
   return (
     <View style={tw`flex-1 justify-center items-center bg-white px-4`} >
