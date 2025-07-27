@@ -18,7 +18,7 @@
         "gradleCommand": ":app:bundleRelease",
         "buildType": "apk",
         "env": {
-          "KOTLIN_VERSION": "2.1.20"
+          "EXPO_USE_STATIC_FRAMEWORK": "1"
         }
       }
     }
