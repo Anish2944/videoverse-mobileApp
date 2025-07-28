@@ -31,16 +31,6 @@ export default {
     },
     plugins: [
       "expo-font",
-      [
-        "expo-build-properties",
-        {
-          android: {
-            kotlinVersion: "1.9.0",
-            gradlePluginVersion: "8.4.0",
-            androidMavenPublishPluginVersion: "0.25.3",
-          },
-        },
-      ],
     ],
     extra: {
       eas: {
