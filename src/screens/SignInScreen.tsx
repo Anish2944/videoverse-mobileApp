@@ -1,5 +1,5 @@
-import { View, Text, Alert, TextInput, ActivityIndicator} from 'react-native'
-import { Button } from 'react-native-paper';
+import { View, Text, Alert, TextInput, TouchableOpacity} from 'react-native'
+import { Button, ActivityIndicator } from 'react-native-paper';
 import React, { useState } from 'react'
 import { useAuthStore } from '../store/authStore';
 import { useNavigation } from '@react-navigation/native';
@@ -7,9 +7,11 @@ import { useMutation } from '@tanstack/react-query';
 import api from '../services/api';
 import tw from 'twrnc';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from '@expo/vector-icons';
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [username, setUsername] = useState('');
   const {setUser, setAccessToken, setRefreshToken} = useAuthStore();
   const navigation = useNavigation();
@@ -36,7 +38,9 @@ const SignInScreen = () => {
   })
 
   if (loginMutation.isPending) {
-    return <ActivityIndicator size="large" color="#0000ff" />
+    return (
+      <ActivityIndicator className='flex-1' size="large" />
+    )
   }
 
   return (
@@ -54,13 +58,22 @@ const SignInScreen = () => {
         onChangeText={setEmail}
         style={tw`w-full p-3 border border-gray-300 rounded-lg mb-4`}
       />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={tw`w-full p-3 border border-gray-300 rounded-lg mb-4`}
-      />
+      <View className='flex-row items-center px-1 border border-gray-300 rounded-lg '>
+        <TextInput
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!passwordVisible}
+          className='flex-1 p-3 '
+        />
+        <TouchableOpacity className='mr-3' onPress={() => setPasswordVisible(!passwordVisible)}>
+          <Ionicons
+            name={passwordVisible ? 'eye-off' : 'eye'}
+            size={24}
+            color="#64748b"
+          />
+        </TouchableOpacity>
+      </View>
       <Button
         mode="contained"
         onPress={() => loginMutation.mutate()}
@@ -69,6 +82,13 @@ const SignInScreen = () => {
       >
         Sign In
       </Button>
+
+      <View className='flex-row items-center mt-4'>
+        <Text className='text-gray-600'>Don't have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SignUp' as never)}>
+          <Text className='text-blue-600 font-bold'>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
       
     </View>
   )

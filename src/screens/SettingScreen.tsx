@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Linking, Alert, Modal, View, TouchableOpacity, TextInput } from 'react-native';
-import { List, Switch, Divider, Text } from 'react-native-paper';
+import { List, Switch, Divider, Text, Button } from 'react-native-paper';
 import { useAuthStore } from '../store/authStore';
 import tw from '../lib/tw'; // or wherever your tw() helper is exported
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,6 +16,7 @@ const SettingsScreen = () => {
       Alert.alert('Error', 'Unable to open link.');
     });
   };
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -52,7 +53,7 @@ const SettingsScreen = () => {
         title="Logout"
         left={(props) => <List.Icon {...props} icon="logout" />}
         titleStyle={{ color: 'red' }}
-        onPress={logout}
+        onPress={() => setIsModalVisible(true)}
       />
 
       <Divider style={tw`my-3`} />
@@ -166,6 +167,31 @@ const SettingsScreen = () => {
               </TouchableOpacity>
               <TouchableOpacity onPress={handlePasswordChange}>
                 <Text style={tw`text-blue-500 font-semibold`}>Change</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+        <Modal
+        transparent
+        visible={isModalVisible}
+        animationType="slide"
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View style={tw`flex-1 justify-center items-center bg-black/50`}>
+          <View style={tw`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} w-11/12 p-6 rounded-xl`}>
+            <Text style={tw`text-lg font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>
+              Logout Account
+            </Text>
+            <Text style={tw`mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>
+              Are you sure you want to logout ?
+            </Text>
+            <View style={tw`flex-row justify-end mt-4`}>
+              <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+                <Text style={tw`text-gray-500 mr-6`}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => logout()}>
+                <Text style={tw`text-red-500 font-semibold`}>Logout</Text>
               </TouchableOpacity>
             </View>
           </View>

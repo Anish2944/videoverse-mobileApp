@@ -126,7 +126,7 @@ const ProfileScreen = () => {
           style={tw`w-full h-40`}
           resizeMode="cover"
         /> : (<View style={tw`w-full h-40 bg-gray-200 flex items-center justify-center`} >
-          <Text style={tw`text-2xl font-bold ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>No Cover Photo</Text>
+          <Text style={tw`text-2xl font-bold ${theme === 'dark' ? 'text-black' : 'text-gray-200'}`}>No Cover Photo</Text>
         </View>)}
         { isOwner && <TouchableOpacity
           onPress={() => pickImage('cover')}
