@@ -15,6 +15,7 @@
       "autoIncrement": true,
       "developmentClient": false,
       "android": {
+        "autoIncrement": true,
         "gradleCommand": ":app:bundleRelease",
         "buildType": "apk",
         "env": {
